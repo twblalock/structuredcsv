@@ -1,10 +1,10 @@
 package structuredcsv
 
 import (
-	"testing"
-	"strings"
-	"io"
 	"fmt"
+	"io"
+	"strings"
+	"testing"
 )
 
 func TestEmpty(t *testing.T) {
@@ -24,7 +24,7 @@ func TestOnlyHeaders(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = reader.Read();
+	_, err = reader.Read()
 	if err != io.EOF {
 		t.Error(err)
 	}
@@ -39,7 +39,7 @@ func TestSimple(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	
+
 	for {
 		row, err := reader.Read()
 		if err == io.EOF {
@@ -49,7 +49,7 @@ func TestSimple(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		
+
 		for _, col := range row.Columns {
 			fmt.Println("header:", col.Header, "value:", col.Value)
 		}
