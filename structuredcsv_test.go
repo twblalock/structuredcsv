@@ -76,3 +76,22 @@ func TestForEach(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestGet(t *testing.T) {
+	csv := `A,B,C
+1,2,3
+4,5,6`
+
+	reader, err := NewReader(strings.NewReader(csv))
+	if err != nil {
+		t.Errorf("error: %s", err)
+	}
+
+	err = reader.ForEach(func(row *Row) {
+		fmt.Println("A is", row.Get("A"))
+	})
+
+	if err != nil {
+		t.Error(err)
+	}
+}

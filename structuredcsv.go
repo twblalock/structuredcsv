@@ -71,14 +71,14 @@ func (r StructuredReader) ForEach(f func(*Row)) error {
 	return nil
 }
 
-func (r Row) Get(header string) *Column {
+func (r Row) Get(header string) string {
 	for _, c := range r.Columns {
 		if c.Header == header {
-			return c
+			return c.Value
 		}
 	}
 
-	return new(Column)
+	return ""
 }
 
 func NewReader(r io.Reader) (*StructuredReader, error) {
