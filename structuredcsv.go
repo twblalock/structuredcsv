@@ -6,7 +6,7 @@ import (
 )
 
 type Row struct {
-	Columns []Column
+	Columns []*Column // TODO should this be an array of pointers or not?
 }
 
 type Column struct {
@@ -26,13 +26,13 @@ func (r StructuredReader) Read() (Row, error) {
 		return row, err
 	}
 
-	cols := make([]Column, len(values))
+	cols := make([]*Column, len(values))
 	for i, v := range values {
 		var header string
 		if i < len(r.headers) {
 			header = r.headers[i]
 		}
-		cols[i] = Column{Header: header, Value: v}
+		cols[i] = &Column{Header: header, Value: v}
 	}
 
 	return Row{Columns: cols}, nil
@@ -55,7 +55,23 @@ func (r StructuredReader) ReadAll() ([]Row, error) {
 	return records, nil
 }
 
-func (r Row) get(header string) Column {
+func (r StructuredReader) ForEach(f func(*Row)) error {
+	for {
+		row, err := r.Read()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+
+		f(&row)
+	}
+
+	return nil
+}
+
+func (r Row) Get(header string) *Column {
 	for _, c := range r.Columns {
 		if c.Header == header {
 			return c
@@ -63,7 +79,7 @@ func (r Row) get(header string) Column {
 	}
 
 	var empty Column
-	return empty
+	return &empty
 }
 
 func NewReader(r io.Reader) (*StructuredReader, error) {
