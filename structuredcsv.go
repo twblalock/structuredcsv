@@ -6,7 +6,7 @@ import (
 )
 
 type Row struct {
-	Columns []*Column // TODO should this be an array of pointers or not?
+	Columns []*Column
 }
 
 type Column struct {
