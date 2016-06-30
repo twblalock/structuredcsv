@@ -78,8 +78,7 @@ func (r Row) Get(header string) *Column {
 		}
 	}
 
-	var empty Column
-	return &empty
+	return new(Column)
 }
 
 func NewReader(r io.Reader) (*StructuredReader, error) {
