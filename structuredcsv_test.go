@@ -95,3 +95,25 @@ func TestGet(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestSet(t *testing.T) {
+	csv := `A,B,C
+1,2,3
+4,5,6`
+
+	reader, err := NewReader(strings.NewReader(csv))
+	if err != nil {
+		t.Errorf("error: %s", err)
+	}
+
+	err = reader.ForEach(func(row *Row) {
+		row.Set("A", "expected")
+		if row.Get("A") != "expected" {
+			t.Error("Failed to set column value")
+		}
+	})
+
+	if err != nil {
+		t.Error(err)
+	}
+}

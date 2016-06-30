@@ -81,6 +81,15 @@ func (r Row) Get(header string) string {
 	return ""
 }
 
+func (r Row) Set(header string, value string) {
+	for _, c := range r.Columns {
+		if c.Header == header {
+			c.Value = value
+			return
+		}
+	}
+}
+
 func NewReader(r io.Reader) (*StructuredReader, error) {
 	csvReader := csv.NewReader(r)
 
